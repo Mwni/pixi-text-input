@@ -337,7 +337,16 @@ function _inherits(subClass, superClass) {
       {
         key: "getCanvasBounds",
         value: function getCanvasBounds() {
-          return this.last_renderer.view.getBoundingClientRect();
+          var rect = this.last_renderer.view.getBoundingClientRect();
+          var bounds = {
+            top: rect.top,
+            left: rect.left,
+            width: rect.width,
+            height: rect.height
+          };
+          bounds.left += window.scrollX;
+          bounds.top += window.scrollY;
+          return bounds;
         }
       },
       {

@@ -219,7 +219,11 @@ class TextInput extends PIXI.Container{
 	// HELPER FUNCTIONS
 
 	getCanvasBounds(){
-		return this.last_renderer.view.getBoundingClientRect()
+		let rect = this.last_renderer.view.getBoundingClientRect()
+		let bounds = {top: rect.top, left: rect.left, width: rect.width, height: rect.height}
+		bounds.left += window.scrollX
+		bounds.top += window.scrollY
+		return bounds
 	}
 
 	getDOMInputBounds(){
