@@ -29,9 +29,10 @@ The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `
 
 ## Box styling using the default box generator
 The input can have 3 different states: 
+
 | state  | description |
 |--|--|
-| `IDLE` | default style when on stage |
+| `IDLE`  | default style when on stage |
 | `ACTIVE` | when the input is focused |
 | `DISABLED` | when the input is disabled |
 
@@ -47,6 +48,7 @@ You will get a box-style as shown in [this demo.](http://manuelotto.com/opensour
 If you don't want a different style for each state, you can just pass:
 
     {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}}
+
 
 
 | Possible attributes  |  |
