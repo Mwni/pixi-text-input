@@ -8,6 +8,7 @@ The input itself is a HTML `<input>` element, which is positioned above the stag
 
 # Demos
 [Demo with default box generator](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_default.html)
+
 [Demo with custom box generator](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_custom.html)
 
 # Documentation
@@ -18,14 +19,17 @@ The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `
     new PIXI.TextInput(input_style,box_styles)
 
 **input_style** : object
-The css style attributes for the HTML input tag.
+
+> The css style attributes for the HTML input tag.
 
 **box_styles** : object | function
-Either an object describing the style of the box using the default box generator, or a function which returns your own custom generated box.
+
+>Either an object describing the style of the box using the default box generator, or a function which returns your own custom generated box.
+
 
 ## Box styling using the default box generator
 The input can have 3 different states: 
-|   |  |
+| state  | description |
 |--|--|
 | `IDLE` | default style when on stage |
 | `ACTIVE` | when the input is focused |
@@ -53,6 +57,8 @@ If you don't want a different style for each state, you can just pass:
 | `stroke.width` | the width of the stroke |
 | `stroke.alpha` | the alpha of the stroke |
 
+
+
 ## Box styling using a custom generator
 Write your own function to generate the box.
 
@@ -71,28 +77,34 @@ Write your own function to generate the box.
 
 See [this demo](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_custom.html) for clarification.
 
+
+
 ## Members
 
 **placeholder** : string  
-The placeholder text applied to the html input element.
+>The placeholder text applied to the html input element.
 
 **text** : string  
-The text (value) of the html input element.
+>The text (value) of the html input element.
 
 **disabled** : boolean  
-Set to true to disable the input.
+>Set to true to disable the input.
+
+
 
 ## Methods
 
 **focus()** : void  
-Focus the input.
+>Focus the input.
 
 **setInputStyle( key** : string, **value** : string **)** : void  
-Change a css style attribute of the input element.
+>Change a css style attribute of the input element.
 For example use
 
     input.setInputStyle('fontSize', '21pt')
-to change the font size.
+>to change the font size.
+
+
 
 ## Contribute
 Feel free to add features or suggest improvements.
