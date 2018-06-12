@@ -88,7 +88,7 @@ function init(){
 	var input_style = {
 		fontFamily: 'Arial',
 		fontSize: '25pt',
-		padding: '14px',
+		padding: '14px 24px',
 		width: '500px',
 		color: 'white'
 	}
@@ -119,10 +119,10 @@ function generateBox(w,h,state){
 	sprite.mask = mask
 
 	switch(state){
-		case 'IDLE':
+		case 'DEFAULT':
 			sprite.tint = 0xffffff
 		break;
-		case 'ACTIVE':
+		case 'FOCUSED':
 			sprite.tint = 0x7EDFFF
 		break;
 		case 'DISABLED':

@@ -4,6 +4,9 @@
 	<title>PIXI.TextInput Demo</title>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.0/pixi.js"></script>
 	<script type="text/javascript" src="../dist/PIXI.TextInput.min.js"></script>
+<script type="text/javascript">
+
+</script>
 	<style type="text/css">
 		body,html{
 			font-family: 'Helvetica Neue', Helvetica, Arial;
@@ -85,7 +88,6 @@ function init(){
 	document.getElementById('canvas-placeholder').appendChild(app.view)
 
 	var input_style = {
-		fontFamily: 'Arial',
 		fontSize: '25pt',
 		padding: '14px',
 		width: '500px',
@@ -93,8 +95,8 @@ function init(){
 	}
 
 	var box_styles = {
-		idle: {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}},
-		active: {fill: 0xE1E3EE, rounded: 16, stroke: {color: 0xABAFC6, width: 4}},
+		default: {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}},
+		focused: {fill: 0xE1E3EE, rounded: 16, stroke: {color: 0xABAFC6, width: 4}},
 		disabled: {fill: 0xDBDBDB, rounded: 16}
 	}
 
