@@ -1,5 +1,5 @@
 # PIXI.TextInput - Plugin for pixi.js
-![](http://manuelotto.com/opensource/PIXI.TextInput/img/preview.png?v2)
+![](http://manuelotto.com/opensource/PIXI.TextInput/img/preview.png)
 
 # About
 
@@ -16,6 +16,9 @@ The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `
 
 ## Creating an instance
 
+![](http://manuelotto.com/opensource/PIXI.TextInput/img/components.png)
+
+
     new PIXI.TextInput( input_style, box_styles )
 
 **input_style** : object
@@ -25,8 +28,6 @@ The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `
 **box_styles** : object | function
 
 >Either an object describing the style of the box using the default box generator, or a function which returns your own custom generated box.
-
-![](http://manuelotto.com/opensource/PIXI.TextInput/img/components.png?v2)
 
 ## Styling the input
 You can apply any CSS styles. You have to use the camcelCase property names, though.
