@@ -26,6 +26,8 @@ The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `
 
 >Either an object describing the style of the box using the default box generator, or a function which returns your own custom generated box.
 
+![](http://manuelotto.com/opensource/PIXI.TextInput/img/components.png?v2)
+
 ## Styling the input
 You can apply any CSS styles. You have to use the camcelCase property names, though.
 
