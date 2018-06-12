@@ -52,8 +52,8 @@ When passing the following object to the second parameter of the constructor...
 
 ```
 new PIXI.TextInput({...}, {
-    idle: {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}},
-    active: {fill: 0xE1E3EE, rounded: 16, stroke: {color: 0xABAFC6, width: 4}},
+    default: {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}},
+    focused: {fill: 0xE1E3EE, rounded: 16, stroke: {color: 0xABAFC6, width: 4}},
     disabled: {fill: 0xDBDBDB, rounded: 16}
 })
 ```
