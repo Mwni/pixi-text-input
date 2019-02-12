@@ -47,7 +47,7 @@
 		</div>
 		<div>
 			<label>Size</label>
-			<input type="number" value="25" id="size"/>
+			<input type="number" value="32" id="size"/>
 		</div>
 		<div>
 			<label>Bold</label>
@@ -87,7 +87,7 @@ function init(){
 
 	var input_style = {
 		fontFamily: 'Arial',
-		fontSize: '25pt',
+		fontSize: '32px',
 		padding: '14px 24px',
 		width: '500px',
 		color: 'white'
@@ -160,7 +160,7 @@ function setupDemoControls(){
 		input.setInputStyle('fontFamily',this.value)
 	}
 	document.getElementById('size').onchange = function(){
-		input.setInputStyle('fontSize',this.value+'pt')
+		input.setInputStyle('fontSize',this.value+'px')
 	}
 	document.getElementById('bold').onchange = function(){
 		input.setInputStyle('fontWeight',this.checked ? 'bold' : 'normal')

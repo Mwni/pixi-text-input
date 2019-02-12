@@ -290,7 +290,7 @@ class TextInput extends PIXI.Container{
 
 		this._surrogate.style = this._deriveSurrogateStyle()
 		this._surrogate.style.padding = Math.max.apply(Math,padding)
-		this._surrogate.y = padding[0] + this._font_metrics.top
+		this._surrogate.y = (input_bounds.height-this._surrogate.height)/2
 		this._surrogate.x = padding[3]
 		this._surrogate.text = this._deriveSurrogateText()
 
@@ -339,6 +339,7 @@ class TextInput extends PIXI.Container{
 
 	_deriveSurrogateStyle(){
 		let style = new PIXI.TextStyle()
+
 		for(var key in this._input_style){
 			switch(key){
 				case 'color':
@@ -353,14 +354,17 @@ class TextInput extends PIXI.Container{
 				break
 			}
 		}
+
 		if(this._dom_input.value.length === 0)
 			style.fill = this._placeholderColor
+
 		return style
 	}
 
 	_deriveSurrogatePadding(){
 		if(this._input_style.padding && this._input_style.padding.length>0){
 			let components = this._input_style.padding.trim().split(' ')
+
 			if(components.length==1){
 				let padding = parseFloat(components[0])
 				return [padding,padding,padding,padding]
@@ -374,6 +378,7 @@ class TextInput extends PIXI.Container{
 				})
 			}
 		}
+
 		return [0,0,0,0]
 	}
 
@@ -382,56 +387,10 @@ class TextInput extends PIXI.Container{
 	}
 
 	_updateFontMetrics(){
-		const TextMetrics = PIXI.TextMetrics
+		const style = this._deriveSurrogateStyle()
+		const font = style.toFontString()
 
-		const font = this._deriveSurrogateStyle().toFontString()
-
-		const canvas = TextMetrics._canvas
-		const context = TextMetrics._context
-
-		context.font = font
-
-		const metricsString = '|Éq' + TextMetrics.BASELINE_SYMBOL
-		const width = Math.ceil(context.measureText(metricsString).width)
-		let baseline = Math.ceil(context.measureText(TextMetrics.BASELINE_SYMBOL).width)
-		const height = 2 * baseline + 5
-
-		baseline = baseline * TextMetrics.BASELINE_MULTIPLIER | 0
-
-		canvas.width = width
-		canvas.height = height
-
-		context.fillStyle = '#f00'
-		context.fillRect(0, 0, width, height)
-
-		context.font = font
-
-		context.textBaseline = 'top'
-		context.fillStyle = '#000'
-		context.fillText(metricsString, 0, 5)
-
-		const imagedata = context.getImageData(0, 0, width, height).data
-		const pixels = imagedata.length
-		const line = width * 4
-
-		let i = 0;
-		let idx = 0;
-		let stop = false;
-
-		for (i = 0; i < baseline; ++i){
-			for (let j = 0; j < line; j += 4){
-				if (imagedata[idx + j] !== 255){
-					stop = true;
-					break;
-				}
-			}
-			if (!stop)
-				idx += line;
-			else
-				break;
-		}
-
-		this._font_metrics = {top: i-5}
+		this._font_metrics = PIXI.TextMetrics.measureFont(font)
 	}
 
 
@@ -459,6 +418,7 @@ class TextInput extends PIXI.Container{
 			this.removeChild(this._box)
 			this._box = null
 		}
+
 		for(let i in this._box_cache){
 			this._box_cache[i].destroy()
 			this._box_cache[i] = null
@@ -510,6 +470,7 @@ class TextInput extends PIXI.Container{
 	_getDOMRelativeWorldTransform(){
 		let canvas_bounds = this._last_renderer.view.getBoundingClientRect()
 		let matrix = this.worldTransform.clone()
+
 		matrix.scale(this._resolution,this._resolution)
 		matrix.scale(canvas_bounds.width/this._last_renderer.width,
 					 canvas_bounds.height/this._last_renderer.height)
@@ -546,6 +507,7 @@ class TextInput extends PIXI.Container{
 
 function DefaultBoxGenerator(styles){
 	styles = styles || {fill: 0xcccccc}
+
 	if(styles.default){
 		styles.focused = styles.focused || styles.default
 		styles.disabled = styles.disabled || styles.default
@@ -554,6 +516,7 @@ function DefaultBoxGenerator(styles){
 		styles = {}
 		styles.default = styles.focused = styles.disabled = temp_styles
 	}
+
 	return function(w,h,state){
 		let style = styles[state.toLowerCase()]
 		let box = new PIXI.Graphics()
