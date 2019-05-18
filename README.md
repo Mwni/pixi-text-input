@@ -19,13 +19,13 @@ The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `
 ![](http://manuelotto.com/opensource/PIXI.TextInput/img/components.png)
 
 
-    new PIXI.TextInput( input_style, box_styles )
+    new PIXI.TextInput( { input: {...}, box: {...} } )
 
-**input_style** : object
+**input** : object
 
 >The css style attributes for the HTML input tag.
 
-**box_styles** : object | function
+**box** : object | function
 
 >Either an object describing the style of the box using the default box generator, or a function which returns your own custom generated box.
 
@@ -34,11 +34,14 @@ You can apply any CSS styles. You have to use the camcelCase property names, tho
 
 ```
 new PIXI.TextInput({
-    fontSize: '25pt',
-    padding: '14px',
-    width: '500px',
-    color: '#26272E'
-}, {...})
+    input: {
+        fontSize: '25pt',
+        padding: '14px',
+        width: '500px',
+        color: '#26272E'
+    }, 
+    box: {...}
+})
 ```
 If you plan to use more advanced properties like `text-shadow`, you will have to disable `substituteText`, as their translation to the pixi-Text style is not supported, yet.
 
@@ -51,10 +54,13 @@ For each state you can apply a different style to the input-box.
 When passing the following object to the second parameter of the constructor...
 
 ```
-new PIXI.TextInput({...}, {
-    default: {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}},
-    focused: {fill: 0xE1E3EE, rounded: 16, stroke: {color: 0xABAFC6, width: 4}},
-    disabled: {fill: 0xDBDBDB, rounded: 16}
+new PIXI.TextInput({
+    input: {...},
+    box: {
+        default: {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}},
+        focused: {fill: 0xE1E3EE, rounded: 16, stroke: {color: 0xABAFC6, width: 4}},
+        disabled: {fill: 0xDBDBDB, rounded: 16}
+    }
 })
 ```
 
@@ -62,7 +68,10 @@ new PIXI.TextInput({...}, {
 
 If you don't want a different style for each state, you can just pass:
 ```
-new PIXI.TextInput({...}, {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}})
+new PIXI.TextInput({
+    input: {...}, 
+    box: {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}}
+})
 ```
 and have the same style for all 3 states.
 
@@ -99,7 +108,10 @@ See [this demo](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_custo
 # Reference
 All described members & methods are accessible through a instance of the TextInput.
 ```
-var input = new PIXI.TextInput({fontSize: '25pt'}, {fill: 0xEEEEEE})
+var input = new PIXI.TextInput({
+    input: {fontSize: '25px'}, 
+    box: {fill: 0xEEEEEE}
+})
 input.x = 100
 input.y = 100
 input.placeholder = 'Enter your Text...'
@@ -144,5 +156,5 @@ use:
 
 
 
-## Contribute
+# Contribute
 Feel free to add features or suggest improvements.

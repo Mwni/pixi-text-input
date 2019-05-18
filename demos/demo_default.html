@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>PIXI.TextInput Demo</title>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.0/pixi.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.0.2/pixi.min.js"></script>
 	<script type="text/javascript" src="../dist/PIXI.TextInput.min.js"></script>
 <script type="text/javascript">
 
@@ -34,6 +34,16 @@
 		.controls > div input[type=button]{
 			padding: 3px 8px;
 		}
+		.source{
+			margin: auto;
+			margin-top: 100px;
+			max-width: 800px;
+			text-align: left;
+		}
+		.source pre{
+			background-color: rgba(255,255,255,0.8);
+			padding: 15px;
+		}
 	</style>
 </head>
 <body onload="init()">
@@ -51,7 +61,7 @@
 		</div>
 		<div>
 			<label>Size</label>
-			<input type="number" value="32" id="size"/>
+			<input type="number" value="36" id="size"/>
 		</div>
 		<div>
 			<label>Bold</label>
@@ -68,6 +78,46 @@
 			<input type="button" value="Animate" id="animate"/>
 		</div>
 	</div>
+
+	<div class="source">
+<pre><span style='color:#800000; font-weight:bold; '>var</span> app
+<span style='color:#800000; font-weight:bold; '>var</span> <span style='color:#797997; '>input</span>
+
+<span style='color:#800000; font-weight:bold; '>function</span> init<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>{</span>
+	app <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>Application<span style='color:#808030; '>(</span>
+		<span style='color:#800080; '>{</span> 
+			width<span style='color:#800080; '>:</span> <span style='color:#008c00; '>1000</span><span style='color:#808030; '>,</span>
+			height<span style='color:#800080; '>:</span> <span style='color:#008c00; '>600</span><span style='color:#808030; '>,</span>
+			antialias<span style='color:#800080; '>:</span> <span style='color:#0f4d75; '>true</span><span style='color:#808030; '>,</span>
+			backgroundColor<span style='color:#800080; '>:</span> <span style='color:#008000; '>0xffffff</span>
+		<span style='color:#800080; '>}</span>
+	<span style='color:#808030; '>)</span>
+	document<span style='color:#808030; '>.</span>getElementById<span style='color:#808030; '>(</span><span style='color:#800000; '>'</span><span style='color:#0000e6; '>canvas-placeholder</span><span style='color:#800000; '>'</span><span style='color:#808030; '>)</span><span style='color:#808030; '>.</span>appendChild<span style='color:#808030; '>(</span>app<span style='color:#808030; '>.</span>view<span style='color:#808030; '>)</span>
+
+
+	<span style='color:#797997; '>input</span> <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>TextInput<span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+		<span style='color:#797997; '>input</span><span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>
+			fontSize<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>36px</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+			padding<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>12px</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+			width<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>500px</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+			color<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>#26272E</span><span style='color:#800000; '>'</span>
+		<span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+		box<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>
+			<span style='color:#800000; font-weight:bold; '>default</span><span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>fill<span style='color:#800080; '>:</span> <span style='color:#008000; '>0xE8E9F3</span><span style='color:#808030; '>,</span> rounded<span style='color:#800080; '>:</span> <span style='color:#008c00; '>12</span><span style='color:#808030; '>,</span> stroke<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>color<span style='color:#800080; '>:</span> <span style='color:#008000; '>0xCBCEE0</span><span style='color:#808030; '>,</span> width<span style='color:#800080; '>:</span> <span style='color:#008c00; '>3</span><span style='color:#800080; '>}</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+			focused<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>fill<span style='color:#800080; '>:</span> <span style='color:#008000; '>0xE1E3EE</span><span style='color:#808030; '>,</span> rounded<span style='color:#800080; '>:</span> <span style='color:#008c00; '>12</span><span style='color:#808030; '>,</span> stroke<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>color<span style='color:#800080; '>:</span> <span style='color:#008000; '>0xABAFC6</span><span style='color:#808030; '>,</span> width<span style='color:#800080; '>:</span> <span style='color:#008c00; '>3</span><span style='color:#800080; '>}</span><span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+			disabled<span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>fill<span style='color:#800080; '>:</span> <span style='color:#008000; '>0xDBDBDB</span><span style='color:#808030; '>,</span> rounded<span style='color:#800080; '>:</span> <span style='color:#008c00; '>12</span><span style='color:#800080; '>}</span>
+		<span style='color:#800080; '>}</span>
+	<span style='color:#800080; '>}</span><span style='color:#808030; '>)</span>
+	
+	<span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>placeholder <span style='color:#808030; '>=</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>Enter your Text...</span><span style='color:#800000; '>'</span>
+	<span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>x <span style='color:#808030; '>=</span> <span style='color:#008c00; '>500</span>
+	<span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>y <span style='color:#808030; '>=</span> <span style='color:#008c00; '>300</span>
+	<span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>pivot<span style='color:#808030; '>.</span>x <span style='color:#808030; '>=</span> <span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>width<span style='color:#808030; '>/</span><span style='color:#008c00; '>2</span>
+	<span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>pivot<span style='color:#808030; '>.</span>y <span style='color:#808030; '>=</span> <span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>height<span style='color:#808030; '>/</span><span style='color:#008c00; '>2</span>
+	app<span style='color:#808030; '>.</span>stage<span style='color:#808030; '>.</span>addChild<span style='color:#808030; '>(</span><span style='color:#797997; '>input</span><span style='color:#808030; '>)</span>
+<span style='color:#800080; '>}</span>
+</pre>
+	</div>
 </body>
 
 <script type="text/javascript">
@@ -78,31 +128,30 @@ var t = 0
 
 function init(){
 	app = new PIXI.Application(
-	  1000, 
-	  600, 
-	  { 
-		antialias: true,
-		backgroundColor: 0xffffff, 
-		forceCanvas: false
-	  }
+		{ 
+			width: 1000,
+			height: 600,
+			antialias: true,
+			backgroundColor: 0xffffff
+		}
 	)
 	document.getElementById('canvas-placeholder').appendChild(app.view)
 
-	var input_style = {
-		fontSize: '36px',
-		padding: '12px',
-		width: '500px',
-		color: '#26272E'
-	}
 
-	var box_styles = {
-		default: {fill: 0xE8E9F3, rounded: 12, stroke: {color: 0xCBCEE0, width: 3}},
-		focused: {fill: 0xE1E3EE, rounded: 12, stroke: {color: 0xABAFC6, width: 3}},
-		disabled: {fill: 0xDBDBDB, rounded: 12}
-	}
+	input = new PIXI.TextInput({
+		input: {
+			fontSize: '36px',
+			padding: '12px',
+			width: '500px',
+			color: '#26272E'
+		},
+		box: {
+			default: {fill: 0xE8E9F3, rounded: 12, stroke: {color: 0xCBCEE0, width: 3}},
+			focused: {fill: 0xE1E3EE, rounded: 12, stroke: {color: 0xABAFC6, width: 3}},
+			disabled: {fill: 0xDBDBDB, rounded: 12}
+		}
+	})
 
-
-	input = new PIXI.TextInput(input_style,box_styles)
 	input.placeholder = 'Enter your Text...'
 	input.x = 500
 	input.y = 300

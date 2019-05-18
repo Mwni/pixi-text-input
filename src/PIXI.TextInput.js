@@ -1,7 +1,7 @@
 (function (PIXI){
 
 class TextInput extends PIXI.Container{
-	constructor(input_style,box_style){
+	constructor(styles){
 		super()
 		this._input_style = Object.assign(
 			{
@@ -12,9 +12,14 @@ class TextInput extends PIXI.Container{
 				transformOrigin: '0 0',
 				lineHeight: '0'
 			},
-			input_style
+			styles.input
 		)
-		this._box_generator = typeof box_style === 'function' ? box_style : new DefaultBoxGenerator(box_style)
+
+		if(styles.box)
+			this._box_generator = typeof styles.box === 'function' ? styles.box : new DefaultBoxGenerator(styles.box)
+		else
+			this._box_generator = null
+
 		this._box_cache = {}
 		this._previous = {}
 		this._dom_added = false
@@ -173,17 +178,25 @@ class TextInput extends PIXI.Container{
 
 	// RENDER & UPDATE
 
+	// for pixi v4
 	renderWebGL(renderer){
 		super.renderWebGL(renderer)
-		this._render(renderer)
+		this._renderInternal(renderer)
 	}
 
+	// for pixi v4
 	renderCanvas(renderer){
 		super.renderCanvas(renderer)
-		this._render(renderer)
+		this._renderInternal(renderer)
 	}
 
-	_render(renderer){
+	// for pixi v5
+	render(renderer){
+		super.render(renderer)
+		this._renderInternal(renderer)
+	}
+
+	_renderInternal(renderer){
 		this._resolution = renderer.resolution
 		this._last_renderer = renderer
 		this._canvas_bounds = this._getCanvasBounds()
@@ -198,6 +211,9 @@ class TextInput extends PIXI.Container{
 	}
 
 	_updateBox(){
+		if(!this._box_generator)
+			return
+
 		if(this._needsNewBoxCache())
 			this._buildBoxCache()
 
@@ -267,6 +283,7 @@ class TextInput extends PIXI.Container{
 
 	_createSurrogate(){
 		this._surrogate_hitbox = new PIXI.Graphics()
+		this._surrogate_hitbox.alpha = 0
 		this._surrogate_hitbox.interactive = true
 		this._surrogate_hitbox.cursor = 'text'
 		this._surrogate_hitbox.on('pointerdown',this._onSurrogateFocus.bind(this))
@@ -300,7 +317,7 @@ class TextInput extends PIXI.Container{
 
 	_updateSurrogateHitbox(bounds){
 		this._surrogate_hitbox.clear()
-		this._surrogate_hitbox.beginFill(0,0)
+		this._surrogate_hitbox.beginFill(0)
 		this._surrogate_hitbox.drawRect(0,0,bounds.width,bounds.height)
 		this._surrogate_hitbox.endFill()
 		this._surrogate_hitbox.interactive = !this._disabled
