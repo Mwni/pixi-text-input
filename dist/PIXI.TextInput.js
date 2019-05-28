@@ -1,12 +1,14 @@
 "use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
-(function (PIXI) {
+(function () {
   var TextInput =
   /*#__PURE__*/
   function (_PIXI$Container) {
@@ -22,9 +24,15 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         border: 'none',
         outline: 'none',
         transformOrigin: '0 0',
-        lineHeight: '0'
+        lineHeight: '1'
       }, styles.input);
       if (styles.box) _this._box_generator = typeof styles.box === 'function' ? styles.box : new DefaultBoxGenerator(styles.box);else _this._box_generator = null;
+
+      if (_this._input_style.hasOwnProperty('multiline')) {
+        _this._multiline = !!_this._input_style.multiline;
+        delete _this._input_style.multiline;
+      } else _this._multiline = false;
+
       _this._box_cache = {};
       _this._previous = {};
       _this._dom_added = false;
@@ -52,6 +60,16 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       this._dom_input.focus();
     };
 
+    _proto.blur = function blur() {
+      this._dom_input.blur();
+    };
+
+    _proto.select = function select() {
+      this.focus();
+
+      this._dom_input.select();
+    };
+
     _proto.setInputStyle = function setInputStyle(key, value) {
       this._input_style[key] = value;
       this._dom_input.style[key] = value;
@@ -67,8 +85,13 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     ;
 
     _proto._createDOMInput = function _createDOMInput() {
-      this._dom_input = document.createElement('input');
-      this._dom_input.type = 'text';
+      if (this._multiline) {
+        this._dom_input = document.createElement('textarea');
+        this._dom_input.style.resize = 'none';
+      } else {
+        this._dom_input = document.createElement('input');
+        this._dom_input.type = 'text';
+      }
 
       for (var key in this._input_style) {
         this._dom_input.style[key] = this._input_style[key];
@@ -95,8 +118,8 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     };
 
     _proto._onInputInput = function _onInputInput(e) {
-      this.emit('input', this.text);
       if (this._substituted) this._updateSubstitution();
+      this.emit('input', this.text);
     };
 
     _proto._onInputKeyUp = function _onInputKeyUp(e) {
@@ -105,10 +128,14 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
     _proto._onFocused = function _onFocused() {
       this._setState('FOCUSED');
+
+      this.emit('focus');
     };
 
     _proto._onBlurred = function _onBlurred() {
       this._setState('DEFAULT');
+
+      this.emit('blur');
     };
 
     _proto._onAdded = function _onAdded() {
@@ -245,7 +272,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
       this._surrogate.style = this._deriveSurrogateStyle();
       this._surrogate.style.padding = Math.max.apply(Math, padding);
-      this._surrogate.y = (input_bounds.height - this._surrogate.height) / 2;
+      this._surrogate.y = this._multiline ? padding[0] : (input_bounds.height - this._surrogate.height) / 2;
       this._surrogate.x = padding[3];
       this._surrogate.text = this._deriveSurrogateText();
 
@@ -317,6 +344,12 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
             style[key] = this._input_style[key];
             break;
         }
+      }
+
+      if (this._multiline) {
+        style.lineHeight = parseFloat(style.fontSize);
+        style.wordWrap = true;
+        style.wordWrapWidth = this._getDOMInputBounds().width;
       }
 
       if (this._dom_input.value.length === 0) style.fill = this._placeholderColor;
@@ -510,6 +543,11 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         this._dom_input.value = text;
         if (this._substituted) this._updateSurrogate();
       }
+    }, {
+      key: "htmlInput",
+      get: function get() {
+        return this._dom_input;
+      }
     }]);
 
     return TextInput;
@@ -541,5 +579,5 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     };
   }
 
-  PIXI.TextInput = TextInput;
-})(PIXI);
+  if ((typeof PIXI === "undefined" ? "undefined" : _typeof(PIXI)) === 'object') PIXI.TextInput = TextInput;else if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === 'object') module.exports = TextInput;else console.warn('[PIXI.TextInput] could not attach to PIXI namespace. Make sure to include this plugin after pixi.js');
+})();

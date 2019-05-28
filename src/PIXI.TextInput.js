@@ -1,4 +1,4 @@
-(function (PIXI){
+(function (){
 
 class TextInput extends PIXI.Container{
 	constructor(styles){
@@ -10,7 +10,7 @@ class TextInput extends PIXI.Container{
 				border: 'none',
 				outline: 'none',
 				transformOrigin: '0 0',
-				lineHeight: '0'
+				lineHeight: '1'
 			},
 			styles.input
 		)
@@ -19,6 +19,12 @@ class TextInput extends PIXI.Container{
 			this._box_generator = typeof styles.box === 'function' ? styles.box : new DefaultBoxGenerator(styles.box)
 		else
 			this._box_generator = null
+
+		if(this._input_style.hasOwnProperty('multiline')){
+			this._multiline = !!this._input_style.multiline
+			delete this._input_style.multiline
+		}else
+			this._multiline = false
 
 		this._box_cache = {}
 		this._previous = {}
@@ -89,12 +95,25 @@ class TextInput extends PIXI.Container{
 		if(this._substituted) this._updateSurrogate()
 	}
 
+	get htmlInput(){
+		return this._dom_input
+	}
+
 	focus(){
 		if(this._substituted && !this.dom_visible)
 			this._setDOMInputVisible(true)
 
 		this._dom_input.focus()
 		
+	}
+
+	blur(){
+		this._dom_input.blur()
+	}
+
+	select(){
+		this.focus()
+		this._dom_input.select()
 	}
 
 	setInputStyle(key,value){
@@ -117,8 +136,14 @@ class TextInput extends PIXI.Container{
 	// SETUP
 
 	_createDOMInput(){
-		this._dom_input = document.createElement('input')
-		this._dom_input.type = 'text'
+		if(this._multiline){
+			this._dom_input = document.createElement('textarea')
+			this._dom_input.style.resize = 'none'
+		}else{
+			this._dom_input = document.createElement('input')
+			this._dom_input.type = 'text'
+		}
+		
 		for(let key in this._input_style){
 			this._dom_input.style[key] = this._input_style[key]
 		}
@@ -139,9 +164,10 @@ class TextInput extends PIXI.Container{
 	}
 
 	_onInputInput(e){
-		this.emit('input',this.text)
 		if(this._substituted)
 			this._updateSubstitution()
+
+		this.emit('input',this.text)
 	}
 
 	_onInputKeyUp(e){
@@ -150,10 +176,12 @@ class TextInput extends PIXI.Container{
 
 	_onFocused(){
 		this._setState('FOCUSED')
+		this.emit('focus')
 	}
 
 	_onBlurred(){
 		this._setState('DEFAULT')
+		this.emit('blur')
 	}
 
 	_onAdded(){
@@ -307,7 +335,7 @@ class TextInput extends PIXI.Container{
 
 		this._surrogate.style = this._deriveSurrogateStyle()
 		this._surrogate.style.padding = Math.max.apply(Math,padding)
-		this._surrogate.y = (input_bounds.height-this._surrogate.height)/2
+		this._surrogate.y = this._multiline ? padding[0] : (input_bounds.height-this._surrogate.height)/2
 		this._surrogate.x = padding[3]
 		this._surrogate.text = this._deriveSurrogateText()
 
@@ -370,6 +398,12 @@ class TextInput extends PIXI.Container{
 					style[key] = this._input_style[key]
 				break
 			}
+		}
+
+		if(this._multiline){
+			style.lineHeight = parseFloat(style.fontSize)
+			style.wordWrap = true
+			style.wordWrapWidth = this._getDOMInputBounds().width
 		}
 
 		if(this._dom_input.value.length === 0)
@@ -560,6 +594,11 @@ function DefaultBoxGenerator(styles){
 	}
 }
 
-PIXI.TextInput = TextInput
 
-})(PIXI)
+if(typeof PIXI === 'object')
+	PIXI.TextInput = TextInput
+else if(typeof module === 'object')
+	module.exports = TextInput
+else console.warn('[PIXI.TextInput] could not attach to PIXI namespace. Make sure to include this plugin after pixi.js')
+
+})()
