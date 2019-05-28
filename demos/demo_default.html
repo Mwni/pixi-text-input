@@ -75,6 +75,9 @@
 			<input type="button" value="Disable" id="disable"/>
 		</div>
 		<div>
+			<input type="button" value="Select" id="select"/>
+		</div>
+		<div>
 			<input type="button" value="Animate" id="animate"/>
 		</div>
 	</div>
@@ -140,6 +143,7 @@ function init(){
 
 	input = new PIXI.TextInput({
 		input: {
+			fontFamily: 'Arial',
 			fontSize: '36px',
 			padding: '12px',
 			width: '500px',
@@ -203,6 +207,9 @@ function setupDemoControls(){
 		this._toggle = !this._toggle
 		input.disabled = this._toggle
 		this.value = this._toggle ? 'Enable' : 'Disable'
+	}
+	document.getElementById('select').onclick = function(){
+		input.select()
 	}
 	document.getElementById('animate').onclick = function(){
 		this._toggle = !this._toggle
