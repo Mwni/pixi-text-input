@@ -106,7 +106,7 @@ Write your own function to generate the box.
 See [this demo](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_custom.html).
 
 # Reference
-All described members & methods are accessible through a instance of the TextInput.
+All described members & methods are accessible through an instance of the TextInput.
 ```
 var input = new PIXI.TextInput({
     input: {fontSize: '25px'}, 
@@ -138,6 +138,9 @@ input.focus()
 **text** : string  
 >The text (value) of the html input element.
 
+**htmlInput** : HTMLInputElement  
+>Direct access to the native HTML input. Who knows what you're planning to do.
+
 **disabled** : boolean
 >Set to true to disable the input.
 
@@ -148,12 +151,42 @@ input.focus()
 **focus()** : void  
 >Focus the input.
 
+**select()** : void  
+>Focus the input and have the text in selection.
+
+**blur()** : void  
+>Remove the focus the input.
+
 **setInputStyle( key** : string, **value** : string **)** : void  
 >Change a css style attribute of the input element.
 >For example, to change the font size,
 use:  
->`input.setInputStyle('fontSize', '21pt')`
+>`input.setInputStyle('fontSize', '21px')`
 
+
+
+## Events
+All events are dispatched via the default pixi EventEmitter.
+```
+input.on('keydown', keycode => {
+    console.log('key pressed:', keycode)
+})
+```
+
+**keydown** -> keycode : int
+>Dispatched when a key is pressed along with its [keycode](http://keycode.info/).
+
+**keyup** -> keycode : int
+>Dispatched when a key is released along with its [keycode](http://keycode.info/).
+
+**input** -> text : string
+>Dispatched when the input's text has been changed along with the current text of the input.
+
+**focus**
+>Dispatched when the input has been focused.
+
+**blur**
+>Dispatched when the focus to the input has been lost.
 
 
 # Contribute
