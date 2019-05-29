@@ -101,7 +101,7 @@ Write your own function to generate the box.
 
  then use it as follows
 
-     new PIXI.TextInput({...},generateCustomBox)
+     new PIXI.TextInput({ input: {...}, box: generateCustomBox })
 
 See [this demo](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_custom.html).
 
@@ -155,7 +155,7 @@ input.focus()
 >Focus the input and have the text in selection.
 
 **blur()** : void  
->Remove the focus the input.
+>Remove the focus of the input.
 
 **setInputStyle( key** : string, **value** : string **)** : void  
 >Change a css style attribute of the input element.
