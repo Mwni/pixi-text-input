@@ -13,7 +13,7 @@ The input itself is a HTML `<input>` element, which is positioned above the stag
 
 # Documentation
 The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `PIXI.Container` and has all the associated properties like `width`, `height`, `rotation`, `scale` ,`alpha`, [etc.](http://pixijs.download/dev/docs/PIXI.Container.html)
-
+    
 ## Creating an instance
 
 ![](http://manuelotto.com/opensource/PIXI.TextInput/img/components.png)

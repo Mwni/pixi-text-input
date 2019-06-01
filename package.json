@@ -1,0 +1,43 @@
+{
+    "name": "pixi-text-input",
+    "version": "2.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Mwni/PIXI.TextInput.git"
+    },
+    "keywords": [
+        "pixi.js",
+        "text",
+        "input"
+    ],
+    "author": "Mwni",
+    "license": "MIT",
+    "contributors": [
+        "Yordan Kanchelov <yordan.kanchelov@gmail.com> (https://github.com/jkanchelov)"
+    ],
+    "bugs": {
+        "url": "https://github.com/Mwni/PIXI.TextInput/issues"
+    },
+    "homepage": "https://github.com/Mwni/PIXI.TextInput#readme",
+    "scripts": {
+        "prepublish": "npm run build",
+        "type-check": "tsc --noEmit",
+        "type-check:watch": "npm run type-check -- --watch",
+        "build": "npm run build:types && npm run build:js",
+        "build:types": "tsc --emitDeclarationOnly",
+        "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
+        "build:watch": "npm run build && babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline --watch"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.0.0",
+        "@babel/core": "^7.0.0",
+        "@babel/plugin-proposal-class-properties": "^7.0.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+        "@babel/preset-env": "^7.0.0",
+        "@babel/preset-typescript": "^7.0.0",
+        "typescript": "^3.0.3"
+    }
+}

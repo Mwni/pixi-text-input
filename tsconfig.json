@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "commonjs",
+        "declaration": true,
+        "outDir": "./dist",
+        "allowSyntheticDefaultImports": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "esModuleInterop": true
+    },
+    "files": ["./src/index.ts"]
+}
