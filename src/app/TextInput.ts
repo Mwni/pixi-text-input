@@ -139,7 +139,7 @@ export class TextInput extends PIXI.Container {
         if (this._last_renderer) this._update();
     }
 
-    destroy(options) {
+    dispose(options) {
         this._destroyBoxCache();
         super.destroy(options);
     }
