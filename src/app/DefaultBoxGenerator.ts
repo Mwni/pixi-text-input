@@ -1,3 +1,5 @@
+import * as PIXI from "pixi.js";
+
 export default function DefaultBoxGenerator(styles) {
     styles = styles || { fill: 0xcccccc };
 
