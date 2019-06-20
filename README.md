@@ -12,7 +12,7 @@ The input itself is a HTML `<input>` element, which is positioned above the stag
 
 [Demo with custom box generator](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_custom.html)
 
-## Installing
+# Installing
 Include the `dist/PIXI.TextInput.js` or `dist/PIXI.TextInput.min.js` in your html document after pixi.js.
 
 A [npm package]([https://www.npmjs.com/package/pixi-text-input](https://www.npmjs.com/package/pixi-text-input)) is available aswell: `npm install pixi-text-input`
