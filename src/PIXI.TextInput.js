@@ -1,4 +1,6 @@
-(function (){
+(function (pkg){
+
+const PIXI = pkg.PIXI
 
 class TextInput extends PIXI.Container{
 	constructor(styles){
@@ -32,6 +34,8 @@ class TextInput extends PIXI.Container{
 		this._dom_visible = true
 		this._placeholder = ''
 		this._placeholderColor = 0xa9a9a9
+		this._selection = [0,0]
+		this._restrict_value = ''
 		this._createDOMInput()
 		this.substituteText = true
 		this._setState('DEFAULT')
@@ -84,6 +88,37 @@ class TextInput extends PIXI.Container{
 		this._disabled = disabled
 		this._dom_input.disabled = disabled
 		this._setState(disabled ? 'DISABLED' : 'DEFAULT')
+	}
+
+	get maxLength(){
+		return this._max_length
+	}
+
+	set maxLength(length){
+		this._max_length = length
+		this._dom_input.setAttribute('maxlength', length)
+	}
+
+	get restrict(){
+		return this._restrict_regex
+	}
+
+	set restrict(regex){
+		if(regex instanceof RegExp){
+			regex = regex.toString().slice(1,-1)
+
+			if(regex.charAt(0) !== '^')
+				regex = '^'+regex
+
+			if(regex.charAt(regex.length-1) !== '$')
+				regex = regex+'$'
+
+			regex = new RegExp(regex)
+		}else{
+			regex = new RegExp('^['+regex+']*$')
+		}
+
+		this._restrict_regex = regex
 	}
 
 	get text(){
@@ -160,10 +195,18 @@ class TextInput extends PIXI.Container{
 	}
 
 	_onInputKeyDown(e){
+		this._selection = [
+			this._dom_input.selectionStart,
+			this._dom_input.selectionEnd
+		]
+
 		this.emit('keydown',e.keyCode)
 	}
 
 	_onInputInput(e){
+		if(this._restrict_regex)
+			this._applyRestriction()
+
 		if(this._substituted)
 			this._updateSubstitution()
 
@@ -285,6 +328,18 @@ class TextInput extends PIXI.Container{
 		this._previous.world_visible = this.worldVisible
 	}
 
+	_applyRestriction(){
+		if(this._restrict_regex.test(this.text)){
+			this._restrict_value = this.text
+		}else{
+			this.text = this._restrict_value
+			this._dom_input.setSelectionRange(
+				this._selection[0],
+				this._selection[1]
+			)
+		}
+	}
+
 
 	// STATE COMPAIRSON (FOR PERFORMANCE BENEFITS)
 
@@ -397,6 +452,9 @@ class TextInput extends PIXI.Container{
 				case 'fontStyle':
 					style[key] = this._input_style[key]
 				break
+				case 'letterSpacing':
+					style.letterSpacing = parseFloat(this._input_style.letterSpacing)
+				break
 			}
 		}
 
@@ -413,24 +471,28 @@ class TextInput extends PIXI.Container{
 	}
 
 	_deriveSurrogatePadding(){
+		let indent = this._input_style.textIndent ? parseFloat(this._input_style.textIndent) : 0
+
 		if(this._input_style.padding && this._input_style.padding.length>0){
 			let components = this._input_style.padding.trim().split(' ')
 
 			if(components.length==1){
 				let padding = parseFloat(components[0])
-				return [padding,padding,padding,padding]
+				return [padding,padding,padding,padding+indent]
 			}else if(components.length==2){
 				let paddingV = parseFloat(components[0])
 				let paddingH = parseFloat(components[1])
-				return [paddingV,paddingH,paddingV,paddingH]
+				return [paddingV,paddingH,paddingV,paddingH+indent]
 			}else if(components.length==4){
-				return components.map(function (component){
+				let padding = components.map(component => {
 					return parseFloat(component)
 				})
+				padding[3] += indent
+				return padding
 			}
 		}
 
-		return [0,0,0,0]
+		return [0,0,0,indent]
 	}
 
 	_deriveSurrogateText(){
@@ -594,11 +656,14 @@ function DefaultBoxGenerator(styles){
 	}
 }
 
+pkg.exportTo[0][pkg.exportTo[1]] = TextInput
 
-if(typeof PIXI === 'object')
-	PIXI.TextInput = TextInput
-else if(typeof module === 'object')
-	module.exports = TextInput
-else console.warn('[PIXI.TextInput] could not attach to PIXI namespace. Make sure to include this plugin after pixi.js')
-
-})()
+})(
+	typeof PIXI === 'object'
+	? { PIXI: PIXI, exportTo: [PIXI,'TextInput'] }
+	: (
+		typeof module === 'object'
+		? { PIXI: require('pixi.js'), exportTo: [module,'exports'] }
+		: console.warn('[PIXI.TextInput] could not attach to PIXI namespace. Make sure to include this plugin after pixi.js') || {}
+	)
+)
