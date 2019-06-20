@@ -2,13 +2,17 @@
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _instanceof(left, right) { if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) { return right[Symbol.hasInstance](left); } else { return left instanceof right; } }
+
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
-(function () {
+(function (pkg) {
+  var PIXI = pkg.PIXI;
+
   var TextInput =
   /*#__PURE__*/
   function (_PIXI$Container) {
@@ -39,6 +43,8 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       _this._dom_visible = true;
       _this._placeholder = '';
       _this._placeholderColor = 0xa9a9a9;
+      _this._selection = [0, 0];
+      _this._restrict_value = '';
 
       _this._createDOMInput();
 
@@ -114,10 +120,12 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     };
 
     _proto._onInputKeyDown = function _onInputKeyDown(e) {
+      this._selection = [this._dom_input.selectionStart, this._dom_input.selectionEnd];
       this.emit('keydown', e.keyCode);
     };
 
     _proto._onInputInput = function _onInputInput(e) {
+      if (this._restrict_regex) this._applyRestriction();
       if (this._substituted) this._updateSubstitution();
       this.emit('input', this.text);
     };
@@ -231,6 +239,16 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       this._previous.world_transform = this.worldTransform.clone();
       this._previous.world_alpha = this.worldAlpha;
       this._previous.world_visible = this.worldVisible;
+    };
+
+    _proto._applyRestriction = function _applyRestriction() {
+      if (this._restrict_regex.test(this.text)) {
+        this._restrict_value = this.text;
+      } else {
+        this.text = this._restrict_value;
+
+        this._dom_input.setSelectionRange(this._selection[0], this._selection[1]);
+      }
     } // STATE COMPAIRSON (FOR PERFORMANCE BENEFITS)
     ;
 
@@ -343,6 +361,10 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
           case 'fontStyle':
             style[key] = this._input_style[key];
             break;
+
+          case 'letterSpacing':
+            style.letterSpacing = parseFloat(this._input_style.letterSpacing);
+            break;
         }
       }
 
@@ -357,24 +379,29 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     };
 
     _proto._deriveSurrogatePadding = function _deriveSurrogatePadding() {
+      var indent = this._input_style.textIndent ? parseFloat(this._input_style.textIndent) : 0;
+
       if (this._input_style.padding && this._input_style.padding.length > 0) {
         var components = this._input_style.padding.trim().split(' ');
 
         if (components.length == 1) {
           var padding = parseFloat(components[0]);
-          return [padding, padding, padding, padding];
+          return [padding, padding, padding, padding + indent];
         } else if (components.length == 2) {
           var paddingV = parseFloat(components[0]);
           var paddingH = parseFloat(components[1]);
-          return [paddingV, paddingH, paddingV, paddingH];
+          return [paddingV, paddingH, paddingV, paddingH + indent];
         } else if (components.length == 4) {
-          return components.map(function (component) {
+          var _padding = components.map(function (component) {
             return parseFloat(component);
           });
+
+          _padding[3] += indent;
+          return _padding;
         }
       }
 
-      return [0, 0, 0, 0];
+      return [0, 0, 0, indent];
     };
 
     _proto._deriveSurrogateText = function _deriveSurrogateText() {
@@ -535,6 +562,33 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         this._setState(disabled ? 'DISABLED' : 'DEFAULT');
       }
     }, {
+      key: "maxLength",
+      get: function get() {
+        return this._max_length;
+      },
+      set: function set(length) {
+        this._max_length = length;
+
+        this._dom_input.setAttribute('maxlength', length);
+      }
+    }, {
+      key: "restrict",
+      get: function get() {
+        return this._restrict_regex;
+      },
+      set: function set(regex) {
+        if (_instanceof(regex, RegExp)) {
+          regex = regex.toString().slice(1, -1);
+          if (regex.charAt(0) !== '^') regex = '^' + regex;
+          if (regex.charAt(regex.length - 1) !== '$') regex = regex + '$';
+          regex = new RegExp(regex);
+        } else {
+          regex = new RegExp('^[' + regex + ']*$');
+        }
+
+        this._restrict_regex = regex;
+      }
+    }, {
       key: "text",
       get: function get() {
         return this._dom_input.value;
@@ -579,5 +633,11 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     };
   }
 
-  if ((typeof PIXI === "undefined" ? "undefined" : _typeof(PIXI)) === 'object') PIXI.TextInput = TextInput;else if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === 'object') module.exports = TextInput;else console.warn('[PIXI.TextInput] could not attach to PIXI namespace. Make sure to include this plugin after pixi.js');
-})();
+  pkg.exportTo[0][pkg.exportTo[1]] = TextInput;
+})((typeof PIXI === "undefined" ? "undefined" : _typeof(PIXI)) === 'object' ? {
+  PIXI: PIXI,
+  exportTo: [PIXI, 'TextInput']
+} : (typeof module === "undefined" ? "undefined" : _typeof(module)) === 'object' ? {
+  PIXI: require('pixi.js'),
+  exportTo: [module, 'exports']
+} : console.warn('[PIXI.TextInput] could not attach to PIXI namespace. Make sure to include this plugin after pixi.js') || {});
