@@ -1,3 +1,4 @@
+
 # PIXI.TextInput - Plugin for pixi.js
 ![](http://manuelotto.com/opensource/PIXI.TextInput/img/preview.png)
 
@@ -10,6 +11,11 @@ The input itself is a HTML `<input>` element, which is positioned above the stag
 [Demo with default box generator](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_default.html)
 
 [Demo with custom box generator](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_custom.html)
+
+## Installing
+Include the `dist/PIXI.TextInput.js` or `dist/PIXI.TextInput.min.js` in your html document after pixi.js.
+
+A [npm package]([https://www.npmjs.com/package/pixi-text-input](https://www.npmjs.com/package/pixi-text-input)) is available aswell: `npm install pixi-text-input`
 
 # Documentation
 The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `PIXI.Container` and has all the associated properties like `width`, `height`, `rotation`, `scale` ,`alpha`, [etc.](http://pixijs.download/dev/docs/PIXI.Container.html)
@@ -137,6 +143,12 @@ input.focus()
 
 **text** : string  
 >The text (value) of the html input element.
+
+**maxLength** : int  
+>The maximum length of the text.
+
+**restrict** : RegExp \| string  
+>Restricts the text input to a specified character set. Either pass a string containing all possible characters or a regular expression, which will be matched against the whole input string.
 
 **htmlInput** : HTMLInputElement  
 >Direct access to the native HTML input. Who knows what you're planning to do.
