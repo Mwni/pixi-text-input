@@ -316,8 +316,8 @@ class TextInput extends PIXI.Container{
 		if(!this._canvas_bounds)
 			return
 
-		this._dom_input.style.top = this._canvas_bounds.top+'px'
-		this._dom_input.style.left = this._canvas_bounds.left+'px'
+		this._dom_input.style.top = (this._canvas_bounds.top || 0)+'px'
+		this._dom_input.style.left = (this._canvas_bounds.left || 0)+'px'
 		this._dom_input.style.transform = this._pixiMatrixToCSS(this._getDOMRelativeWorldTransform())
 		this._dom_input.style.opacity = this.worldAlpha
 		this._setDOMInputVisible(this.worldVisible && this._dom_visible)
