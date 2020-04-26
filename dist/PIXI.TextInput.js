@@ -1,8 +1,8 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _instanceof(left, right) { if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) { return right[Symbol.hasInstance](left); } else { return left instanceof right; } }
+function _instanceof(left, right) { if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) { return !!right[Symbol.hasInstance](left); } else { return left instanceof right; } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -13,9 +13,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 (function (pkg) {
   var PIXI = pkg.PIXI;
 
-  var TextInput =
-  /*#__PURE__*/
-  function (_PIXI$Container) {
+  var TextInput = /*#__PURE__*/function (_PIXI$Container) {
     _inheritsLoose(TextInput, _PIXI$Container);
 
     function TextInput(styles) {
@@ -84,7 +82,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     };
 
     _proto.destroy = function destroy(options) {
-      this.destroyBoxCache();
+      this._destroyBoxCache();
 
       _PIXI$Container.prototype.destroy.call(this, options);
     } // SETUP
@@ -228,8 +226,8 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
     _proto._updateDOMInput = function _updateDOMInput() {
       if (!this._canvas_bounds) return;
-      this._dom_input.style.top = this._canvas_bounds.top + 'px';
-      this._dom_input.style.left = this._canvas_bounds.left + 'px';
+      this._dom_input.style.top = (this._canvas_bounds.top || 0) + 'px';
+      this._dom_input.style.left = (this._canvas_bounds.left || 0) + 'px';
       this._dom_input.style.transform = this._pixiMatrixToCSS(this._getDOMRelativeWorldTransform());
       this._dom_input.style.opacity = this.worldAlpha;
 
@@ -293,6 +291,20 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       this._surrogate.y = this._multiline ? padding[0] : (input_bounds.height - this._surrogate.height) / 2;
       this._surrogate.x = padding[3];
       this._surrogate.text = this._deriveSurrogateText();
+
+      switch (this._surrogate.style.align) {
+        case 'left':
+          this._surrogate.x = padding[3];
+          break;
+
+        case 'center':
+          this._surrogate.x = input_bounds.width * 0.5 - this._surrogate.width * 0.5;
+          break;
+
+        case 'right':
+          this._surrogate.x = input_bounds.width - padding[1] - this._surrogate.width;
+          break;
+      }
 
       this._updateSurrogateHitbox(input_bounds);
 
@@ -364,6 +376,10 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
           case 'letterSpacing':
             style.letterSpacing = parseFloat(this._input_style.letterSpacing);
+            break;
+
+          case 'textAlign':
+            style.align = this._input_style.textAlign;
             break;
         }
       }
