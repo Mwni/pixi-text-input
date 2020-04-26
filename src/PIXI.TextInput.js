@@ -394,6 +394,20 @@ class TextInput extends PIXI.Container{
 		this._surrogate.x = padding[3]
 		this._surrogate.text = this._deriveSurrogateText()
 
+		switch (this._surrogate.style.align){
+			case 'left':
+				this._surrogate.x = padding[3]
+				break
+
+			case 'center':
+				this._surrogate.x = input_bounds.width * 0.5 - this._surrogate.width * 0.5
+				break
+				
+			case 'right':
+				this._surrogate.x = input_bounds.width - padding[1] - this._surrogate.width
+				break
+		}
+
 		this._updateSurrogateHitbox(input_bounds)
 		this._updateSurrogateMask(input_bounds,padding)
 	}
@@ -444,17 +458,23 @@ class TextInput extends PIXI.Container{
 			switch(key){
 				case 'color':
 					style.fill = this._input_style.color
-				break
+					break
+
 				case 'fontFamily':
 				case 'fontSize':
 				case 'fontWeight':
 				case 'fontVariant':
 				case 'fontStyle':
 					style[key] = this._input_style[key]
-				break
+					break
+
 				case 'letterSpacing':
 					style.letterSpacing = parseFloat(this._input_style.letterSpacing)
-				break
+					break
+
+				case 'textAlign':
+					style.align = this._input_style.textAlign
+					break
 			}
 		}
 
