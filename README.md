@@ -1,6 +1,6 @@
 
 # PIXI.TextInput - Plugin for pixi.js
-![](http://manuelotto.com/opensource/PIXI.TextInput/img/preview.png)
+![](https://mwni.io/opensource/PIXI.TextInput/img/preview.png)
 
 # About
 
@@ -8,9 +8,9 @@ This plugin for pixi.js provides a convenient way of adding text inputs to the p
 The input itself is a HTML `<input>` element, which is positioned above the stage according to the transformation given by the PIXI-DisplayObject. The box is drawn on the PIXI-stage. Additionally, you can choose whether the plugin should substitute the `<input>` with a native pixi-Text when the textfield has no focus.
 
 # Demos
-[Demo with default box generator](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_default.html)
+[Demo with default box generator](https://mwni.io/opensource/PIXI.TextInput/demos/demo_default.html)
 
-[Demo with custom box generator](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_custom.html)
+[Demo with custom box generator](https://mwni.io/opensource/PIXI.TextInput/demos/demo_custom.html)
 
 # Installing
 Include the `dist/PIXI.TextInput.js` or `dist/PIXI.TextInput.min.js` in your html document after pixi.js.
@@ -22,7 +22,7 @@ The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `
 
 ## Creating an instance
 
-![](http://manuelotto.com/opensource/PIXI.TextInput/img/components.png)
+![](https://mwni.io/opensource/PIXI.TextInput/img/components.png)
 
 
     new PIXI.TextInput( { input: {...}, box: {...} } )
@@ -70,7 +70,7 @@ new PIXI.TextInput({
 })
 ```
 
-...you will get a box-style as shown in [this demo.](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_default.html)
+...you will get a box-style as shown in [this demo.](https://mwni.io/opensource/PIXI.TextInput/demos/demo_default.html)
 
 If you don't want a different style for each state, you can just pass:
 ```
@@ -109,7 +109,7 @@ Write your own function to generate the box.
 
      new PIXI.TextInput({ input: {...}, box: generateCustomBox })
 
-See [this demo](http://manuelotto.com/opensource/PIXI.TextInput/demos/demo_custom.html).
+See [this demo](https://mwni.io/opensource/PIXI.TextInput/demos/demo_custom.html).
 
 # Reference
 All described members & methods are accessible through an instance of the TextInput.
