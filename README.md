@@ -13,9 +13,7 @@ The input itself is a HTML `<input>` element, which is positioned above the stag
 [Demo with custom box generator](https://mwni.io/opensource/PIXI.TextInput/demos/demo_custom.html)
 
 # Installing
-Include the `dist/PIXI.TextInput.js` or `dist/PIXI.TextInput.min.js` in your html document after pixi.js.
-
-A [npm package](https://www.npmjs.com/package/pixi-text-input) is available aswell: `npm install pixi-text-input`
+Include the`dist/PIXI.TextInput.min.js` in your html document after pixi.js or install the [npm package](https://www.npmjs.com/package/pixi-text-input) via: `npm install pixi-text-input`
 
 # Documentation
 The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `PIXI.Container` and has all the associated properties like `width`, `height`, `rotation`, `scale` ,`alpha`, [etc.](http://pixijs.download/dev/docs/PIXI.Container.html)
