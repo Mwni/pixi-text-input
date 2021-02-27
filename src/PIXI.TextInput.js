@@ -516,7 +516,13 @@ class TextInput extends PIXI.Container{
 	}
 
 	_deriveSurrogateText(){
-		return this._dom_input.value.length === 0 ? this._placeholder : this._dom_input.value
+		if(this._dom_input.value.length === 0)
+			return this._placeholder
+
+		if(this._dom_input.type == 'password')
+			return '•'.repeat(this._dom_input.value.length)
+
+		return this._dom_input.value
 	}
 
 	_updateFontMetrics(){
