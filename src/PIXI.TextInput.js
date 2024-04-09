@@ -431,6 +431,7 @@ class TextInput extends PIXI.Container{
 		if(!this._surrogate) return
 
 		this.removeChild(this._surrogate)
+		this.removeChild(this._surrogate_mask)
 		this.removeChild(this._surrogate_hitbox)
 
 		this._surrogate.destroy()
@@ -541,11 +542,11 @@ class TextInput extends PIXI.Container{
 		let states = ['DEFAULT','FOCUSED','DISABLED']
 		let input_bounds = this._getDOMInputBounds()
 
-		for(let i in states){
-			this._box_cache[states[i]] = this._box_generator(
+		for(let state of states){
+			this._box_cache[state] = this._box_generator(
 				input_bounds.width,
 				input_bounds.height,
-				states[i]
+				state
 			)
 		}
 
