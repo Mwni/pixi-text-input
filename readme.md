@@ -1,6 +1,6 @@
 
-# PIXI.TextInput - Plugin for pixi.js
-![](https://mwni.io/opensource/PIXI.TextInput/img/preview.png)
+# PIXI TextInput - Plugin for pixi.js
+![](https://mwni.io/pixi-text-input/preview.png)
 
 # About
 
@@ -8,22 +8,27 @@ This plugin for pixi.js provides a convenient way of adding text inputs to the p
 The input itself is a HTML `<input>` element, which is positioned above the stage according to the transformation given by the PIXI-DisplayObject. The box is drawn on the PIXI-stage. Additionally, you can choose whether the plugin should substitute the `<input>` with a native pixi-Text when the textfield has no focus.
 
 # Demos
-[Demo with default box generator](https://mwni.io/opensource/PIXI.TextInput/demos/demo_default.html)
+[Demo with default box generator](https://mwni.io/pixi-text-input/demos/default.html)
 
-[Demo with custom box generator](https://mwni.io/opensource/PIXI.TextInput/demos/demo_custom.html)
+[Demo with custom box generator](https://mwni.io/pixi-text-input/demos/custom.html)
 
 # Installing
-Include the`dist/PIXI.TextInput.min.js` in your html document after pixi.js or install the [npm package](https://www.npmjs.com/package/pixi-text-input) via: `npm install pixi-text-input`
+```sh
+npm install pixi-text-input
+```
 
 # Documentation
 The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `PIXI.Container` and has all the associated properties like `width`, `height`, `rotation`, `scale` ,`alpha`, [etc.](http://pixijs.download/dev/docs/PIXI.Container.html)
 
 ## Creating an instance
 
-![](https://mwni.io/opensource/PIXI.TextInput/img/components.png)
+![](https://mwni.io/pixi-text-input/components.png)
 
+```js
+import TextInput from 'pixi-text-input'
 
-    new PIXI.TextInput( { input: {...}, box: {...} } )
+let input = new TextInput( { input: {...}, box: {...} } )
+```
 
 **input** : object
 
@@ -37,7 +42,7 @@ The TextInput behaves just like any other PIXI-DisplayObject. It inherits from `
 You can apply any CSS styles. You have to use the camcelCase property names, though.
 
 ```
-new PIXI.TextInput({
+new TextInput({
     input: {
         fontSize: '25pt',
         padding: '14px',
@@ -58,7 +63,7 @@ For each state you can apply a different style to the input-box.
 When passing the following object to the second parameter of the constructor...
 
 ```
-new PIXI.TextInput({
+new TextInput({
     input: {...},
     box: {
         default: {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}},
@@ -68,11 +73,11 @@ new PIXI.TextInput({
 })
 ```
 
-...you will get a box-style as shown in [this demo.](https://mwni.io/opensource/PIXI.TextInput/demos/demo_default.html)
+...you will get a box-style as shown in [this demo.](https://mwni.io/pixi-text-input/demos/default.html)
 
 If you don't want a different style for each state, you can just pass:
 ```
-new PIXI.TextInput({
+new TextInput({
     input: {...}, 
     box: {fill: 0xE8E9F3, rounded: 16, stroke: {color: 0xCBCEE0, width: 4}}
 })
@@ -105,14 +110,14 @@ Write your own function to generate the box.
 
  then use it as follows
 
-     new PIXI.TextInput({ input: {...}, box: generateCustomBox })
+     new TextInput({ input: {...}, box: generateCustomBox })
 
-See [this demo](https://mwni.io/opensource/PIXI.TextInput/demos/demo_custom.html).
+See [this demo](https://mwni.io/pixi-text-input/demos/custom.html).
 
 # Reference
 All described members & methods are accessible through an instance of the TextInput.
 ```
-var input = new PIXI.TextInput({
+var input = new TextInput({
     input: {fontSize: '25px'}, 
     box: {fill: 0xEEEEEE}
 })
