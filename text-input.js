@@ -1,8 +1,6 @@
-(function (pkg){
+import { Container, Graphics, Text, TextStyle, TextMetrics } from 'pixi.js'
 
-const PIXI = pkg.PIXI
-
-class TextInput extends PIXI.Container{
+export default class TextInput extends Container{
 	constructor(styles){
 		super()
 		this._input_style = Object.assign(
@@ -365,17 +363,17 @@ class TextInput extends PIXI.Container{
 	// INPUT SUBSTITUTION
 
 	_createSurrogate(){
-		this._surrogate_hitbox = new PIXI.Graphics()
+		this._surrogate_hitbox = new Graphics()
 		this._surrogate_hitbox.alpha = 0
 		this._surrogate_hitbox.interactive = true
 		this._surrogate_hitbox.cursor = 'text'
 		this._surrogate_hitbox.on('pointerdown',this._onSurrogateFocus.bind(this))
 		this.addChild(this._surrogate_hitbox)
 
-		this._surrogate_mask = new PIXI.Graphics()
+		this._surrogate_mask = new Graphics()
 		this.addChild(this._surrogate_mask)
 
-		this._surrogate = new PIXI.Text('',{})
+		this._surrogate = new Text('',{})
 		this.addChild(this._surrogate)
 
 		this._surrogate.mask = this._surrogate_mask
@@ -453,7 +451,7 @@ class TextInput extends PIXI.Container{
 	}
 
 	_deriveSurrogateStyle(){
-		let style = new PIXI.TextStyle()
+		let style = new TextStyle()
 
 		for(var key in this._input_style){
 			switch(key){
@@ -530,7 +528,7 @@ class TextInput extends PIXI.Container{
 		const style = this._deriveSurrogateStyle()
 		const font = style.toFontString()
 
-		this._font_metrics = PIXI.TextMetrics.measureFont(font)
+		this._font_metrics = TextMetrics.measureFont(font)
 	}
 
 
@@ -613,7 +611,7 @@ class TextInput extends PIXI.Container{
 
 		matrix.scale(this._resolution,this._resolution)
 		matrix.scale(canvas_bounds.width/this._last_renderer.width,
-					 canvas_bounds.height/this._last_renderer.height)
+						canvas_bounds.height/this._last_renderer.height)
 		return matrix
 	}
 
@@ -659,7 +657,7 @@ function DefaultBoxGenerator(styles){
 
 	return function(w,h,state){
 		let style = styles[state.toLowerCase()]
-		let box = new PIXI.Graphics()
+		let box = new Graphics()
 
 		if(style.fill)
 			box.beginFill(style.fill)
@@ -682,15 +680,3 @@ function DefaultBoxGenerator(styles){
 		return box
 	}
 }
-
-pkg.exportTo[0][pkg.exportTo[1]] = TextInput
-
-})(
-	typeof PIXI === 'object'
-	? { PIXI: PIXI, exportTo: [PIXI,'TextInput'] }
-	: (
-		typeof module === 'object'
-		? { PIXI: require('pixi.js'), exportTo: [module,'exports'] }
-		: console.warn('[PIXI.TextInput] could not attach to PIXI namespace. Make sure to include this plugin after pixi.js') || {}
-	)
-)
