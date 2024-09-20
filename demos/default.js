@@ -5,18 +5,18 @@ let app
 let input
 let t = 0
 
-function init(){
-	app = new Application(
-		{ 
-			width: 1000,
-			height: 600,
-			antialias: true,
-			backgroundColor: 0xffffff,
-			resolution: window.devicePixelRatio || 1
-		}
-	)
-	document.getElementById('canvas-placeholder').appendChild(app.view)
+async function init(){
+	app = new Application()
 
+	await app.init({ 
+		width: 1000,
+		height: 600,
+		antialias: true,
+		backgroundColor: 0xffffff,
+		resolution: window.devicePixelRatio || 1
+	})
+
+	document.getElementById('canvas-placeholder').appendChild(app.canvas)
 
 	input = new TextInput({
 		input: {

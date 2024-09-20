@@ -1,4 +1,4 @@
-import { Container, Graphics, Text, TextStyle, TextMetrics } from 'pixi.js'
+import { Container, Graphics, Text, TextStyle } from 'pixi.js'
 
 export default class TextInput extends Container{
 	constructor(styles){
@@ -38,6 +38,7 @@ export default class TextInput extends Container{
 		this.substituteText = true
 		this._setState('DEFAULT')
 		this._addListeners()
+		this.onRender = this._onRender.bind(this)
 	}
 
 
@@ -153,9 +154,6 @@ export default class TextInput extends Container{
 		this._input_style[key] = value
 		this._dom_input.style[key] = value
 
-		if(this._substituted && (key==='fontFamily' || key==='fontSize'))
-			this._updateFontMetrics()
-
 		if(this._last_renderer)
 			this._update()
 	}
@@ -229,6 +227,7 @@ export default class TextInput extends Container{
 		document.body.appendChild(this._dom_input)
 		this._dom_input.style.display = 'none'
 		this._dom_added = true
+		console.log(this.parent)
 	}
 
 	_onRemoved(){
@@ -247,25 +246,7 @@ export default class TextInput extends Container{
 
 	// RENDER & UPDATE
 
-	// for pixi v4
-	renderWebGL(renderer){
-		super.renderWebGL(renderer)
-		this._renderInternal(renderer)
-	}
-
-	// for pixi v4
-	renderCanvas(renderer){
-		super.renderCanvas(renderer)
-		this._renderInternal(renderer)
-	}
-
-	// for pixi v5
-	render(renderer){
-		super.render(renderer)
-		this._renderInternal(renderer)
-	}
-
-	_renderInternal(renderer){
+	_onRender(renderer){
 		this._resolution = renderer.resolution
 		this._last_renderer = renderer
 		this._canvas_bounds = this._getCanvasBounds()
@@ -373,12 +354,10 @@ export default class TextInput extends Container{
 		this._surrogate_mask = new Graphics()
 		this.addChild(this._surrogate_mask)
 
-		this._surrogate = new Text('',{})
+		this._surrogate = new Text({ text: '' })
 		this.addChild(this._surrogate)
 
 		this._surrogate.mask = this._surrogate_mask
-
-		this._updateFontMetrics()
 		this._updateSurrogate()
 	}
 
@@ -412,17 +391,15 @@ export default class TextInput extends Container{
 
 	_updateSurrogateHitbox(bounds){
 		this._surrogate_hitbox.clear()
-		this._surrogate_hitbox.beginFill(0)
-		this._surrogate_hitbox.drawRect(0,0,bounds.width,bounds.height)
-		this._surrogate_hitbox.endFill()
+		this._surrogate_hitbox.rect(0,0,bounds.width,bounds.height)
+		this._surrogate_hitbox.fill()
 		this._surrogate_hitbox.interactive = !this._disabled
 	}
 
 	_updateSurrogateMask(bounds,padding){
 		this._surrogate_mask.clear()
-		this._surrogate_mask.beginFill(0)
-		this._surrogate_mask.drawRect(padding[3],0,bounds.width-padding[3]-padding[1],bounds.height)
-		this._surrogate_mask.endFill()
+		this._surrogate_mask.rect(padding[3],0,bounds.width-padding[3]-padding[1],bounds.height)
+		this._surrogate_mask.fill()
 	}
 
 	_destroySurrogate(){
@@ -522,13 +499,6 @@ export default class TextInput extends Container{
 			return '•'.repeat(this._dom_input.value.length)
 
 		return this._dom_input.value
-	}
-
-	_updateFontMetrics(){
-		const style = this._deriveSurrogateStyle()
-		const font = style.toFontString()
-
-		this._font_metrics = TextMetrics.measureFont(font)
 	}
 
 
@@ -659,23 +629,16 @@ function DefaultBoxGenerator(styles){
 		let style = styles[state.toLowerCase()]
 		let box = new Graphics()
 
+		if(style.rounded)
+			box.roundRect(0,0,w,h,style.rounded)
+		else
+			box.rect(0,0,w,h)
+
 		if(style.fill)
-			box.beginFill(style.fill)
+			box.fill(style.fill)
 
 		if(style.stroke)
-			box.lineStyle(
-				style.stroke.width || 1,
-				style.stroke.color || 0,
-				style.stroke.alpha || 1
-			)
-
-		if(style.rounded)
-			box.drawRoundedRect(0,0,w,h,style.rounded)
-		else
-			box.drawRect(0,0,w,h)
-
-		box.endFill()
-		box.closePath()
+			box.stroke(style.stroke)
 
 		return box
 	}

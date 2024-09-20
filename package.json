@@ -1,11 +1,11 @@
 {
 	"name": "pixi-text-input",
 	"type": "module",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "Plugin for Pixi.js which provides a convenient way of adding a text input to the pixijs-stage.",
 	"main": "text-input.js",
 	"peerDependencies": {
-		"pixi.js": "^4.0.0"
+		"pixi.js": "^8.0.0"
 	},
 	"devDependencies": {
 		"esbuild": "^0.23.1"
