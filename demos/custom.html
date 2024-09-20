@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>PIXI TextInput Demo</title>
+	<style type="text/css">
+		body,html{
+			font-family: 'Helvetica Neue', Helvetica, Arial;
+			background-color: #eee;
+			text-align: center;
+		}
+		canvas{
+			display: block;
+			margin: auto;
+			width: 1000px;
+			height: auto;
+		}
+		.controls > div{
+			display: inline-block;
+			margin: 20px 10px 0 10px;
+			vertical-align: middle;
+		}
+		.controls > div input,
+		.controls > div select{
+			font-size: 13pt;
+			padding: 3px;
+		}
+		.controls > div input[type=number]{
+			width: 50px;
+		}
+		.controls > div input[type=button]{
+			padding: 3px 8px;
+		}
+		.source{
+			margin: auto;
+			margin-top: 50px;
+			max-width: 800px;
+			text-align: left;
+		}
+		.source pre{
+			background-color: rgba(255,255,255,0.8);
+			padding: 15px;
+		}
+	</style>
+</head>
+<body>
+	<h1>PIXI TextInput Demo</h1>
+	<div id="canvas-placeholder"></div>
+	<div class="controls">
+		<div>
+			<label>Font</label>
+			<select id="font">
+				<option value="Arial">Arial</option>
+				<option value="Helvetica">Helvetica</option>
+				<option value="Times New Roman">Times New Roman</option>
+				<option value="Tahoma">Tahoma</option>
+			</select>
+		</div>
+		<div>
+			<label>Size</label>
+			<input type="number" value="36" id="size"/>
+		</div>
+		<div>
+			<label>Bold</label>
+			<input type="checkbox" id="bold"/>
+		</div>
+		<div>
+			<label>Padding</label>
+			<input type="number" value="12" id="padding"/>
+		</div>
+		<div>
+			<input type="button" value="Disable" id="disable"/>
+		</div>
+		<div>
+			<input type="button" value="Select" id="select"/>
+		</div>
+		<div>
+			<input type="button" value="Animate" id="animate"/>
+		</div>
+	</div>
+
+	<div class="source">
+<pre><span style='color:#800000; font-weight:bold; '>var</span> app
+<span style='color:#800000; font-weight:bold; '>var</span> <span style='color:#797997; '>input</span>
+
+<span style='color:#800000; font-weight:bold; '>function</span> init<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>{</span>
+	app <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>Application<span style='color:#808030; '>(</span>
+		<span style='color:#800080; '>{</span> 
+			width<span style='color:#800080; '>:</span> <span style='color:#008c00; '>1000</span><span style='color:#808030; '>,</span>
+			height<span style='color:#800080; '>:</span> <span style='color:#008c00; '>600</span><span style='color:#808030; '>,</span>
+			antialias<span style='color:#800080; '>:</span> <span style='color:#0f4d75; '>true</span><span style='color:#808030; '>,</span>
+			backgroundColor<span style='color:#800080; '>:</span> <span style='color:#008000; '>0xffffff</span>
+		<span style='color:#800080; '>}</span>
+	<span style='color:#808030; '>)</span>
+	document<span style='color:#808030; '>.</span>getElementById<span style='color:#808030; '>(</span><span style='color:#800000; '>'</span><span style='color:#0000e6; '>canvas-placeholder</span><span style='color:#800000; '>'</span><span style='color:#808030; '>)</span><span style='color:#808030; '>.</span>appendChild<span style='color:#808030; '>(</span>app<span style='color:#808030; '>.</span>view<span style='color:#808030; '>)</span>
+
+
+	<span style='color:#797997; '>input</span> <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>TextInput<span style='color:#808030; '>(</span><span style='color:#800080; '>{</span>
+		<span style='color:#797997; '>input</span><span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>
+			fontFamily<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>Arial</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+			fontSize<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>32px</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+			padding<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>14px 24px</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+			width<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>500px</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+			color<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>white</span><span style='color:#800000; '>'</span>
+		<span style='color:#800080; '>}</span><span style='color:#808030; '>,</span>
+		box<span style='color:#800080; '>:</span> generateBox
+	<span style='color:#800080; '>}</span><span style='color:#808030; '>)</span>
+	
+	<span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>placeholder <span style='color:#808030; '>=</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>Enter your Text...</span><span style='color:#800000; '>'</span>
+	<span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>x <span style='color:#808030; '>=</span> <span style='color:#008c00; '>500</span>
+	<span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>y <span style='color:#808030; '>=</span> <span style='color:#008c00; '>300</span>
+	<span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>pivot<span style='color:#808030; '>.</span>x <span style='color:#808030; '>=</span> <span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>width<span style='color:#808030; '>/</span><span style='color:#008c00; '>2</span>
+	<span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>pivot<span style='color:#808030; '>.</span>y <span style='color:#808030; '>=</span> <span style='color:#797997; '>input</span><span style='color:#808030; '>.</span>height<span style='color:#808030; '>/</span><span style='color:#008c00; '>2</span>
+	app<span style='color:#808030; '>.</span>stage<span style='color:#808030; '>.</span>addChild<span style='color:#808030; '>(</span><span style='color:#797997; '>input</span><span style='color:#808030; '>)</span>
+<span style='color:#800080; '>}</span>
+
+<span style='color:#800000; font-weight:bold; '>function</span> generateBox<span style='color:#808030; '>(</span>w<span style='color:#808030; '>,</span>h<span style='color:#808030; '>,</span>state<span style='color:#808030; '>)</span><span style='color:#800080; '>{</span>
+	<span style='color:#800000; font-weight:bold; '>var</span> box <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>Container<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+	<span style='color:#800000; font-weight:bold; '>var</span> sprite <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>extras<span style='color:#808030; '>.</span>TilingSprite<span style='color:#808030; '>(</span>PIXI<span style='color:#808030; '>.</span>Texture<span style='color:#808030; '>.</span>fromImage<span style='color:#808030; '>(</span><span style='color:#800000; '>'</span><span style='color:#0000e6; '>tile.png</span><span style='color:#800000; '>'</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> w<span style='color:#808030; '>,</span> h<span style='color:#808030; '>)</span>
+	<span style='color:#800000; font-weight:bold; '>var</span> mask <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>Graphics<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+
+
+	mask<span style='color:#808030; '>.</span>beginFill<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span>
+	mask<span style='color:#808030; '>.</span>drawRoundedRect<span style='color:#808030; '>(</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span><span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span>w<span style='color:#808030; '>,</span>h<span style='color:#808030; '>,</span><span style='color:#008c00; '>36</span><span style='color:#808030; '>)</span>
+
+	box<span style='color:#808030; '>.</span>addChild<span style='color:#808030; '>(</span>sprite<span style='color:#808030; '>)</span>
+	box<span style='color:#808030; '>.</span>addChild<span style='color:#808030; '>(</span>mask<span style='color:#808030; '>)</span>
+	sprite<span style='color:#808030; '>.</span>mask <span style='color:#808030; '>=</span> mask
+
+	<span style='color:#800000; font-weight:bold; '>switch</span><span style='color:#808030; '>(</span>state<span style='color:#808030; '>)</span><span style='color:#800080; '>{</span>
+		<span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>DEFAULT</span><span style='color:#800000; '>'</span><span style='color:#800080; '>:</span>
+			sprite<span style='color:#808030; '>.</span>tint <span style='color:#808030; '>=</span> <span style='color:#008000; '>0xffffff</span>
+		<span style='color:#800000; font-weight:bold; '>break</span><span style='color:#800080; '>;</span>
+		<span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>FOCUSED</span><span style='color:#800000; '>'</span><span style='color:#800080; '>:</span>
+			sprite<span style='color:#808030; '>.</span>tint <span style='color:#808030; '>=</span> <span style='color:#008000; '>0x7EDFFF</span>
+		<span style='color:#800000; font-weight:bold; '>break</span><span style='color:#800080; '>;</span>
+		<span style='color:#800000; font-weight:bold; '>case</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>DISABLED</span><span style='color:#800000; '>'</span><span style='color:#800080; '>:</span>
+			sprite<span style='color:#808030; '>.</span>alpha <span style='color:#808030; '>=</span> <span style='color:#008000; '>0.5</span>
+		<span style='color:#800000; font-weight:bold; '>break</span><span style='color:#800080; '>;</span>
+	<span style='color:#800080; '>}</span>
+
+	<span style='color:#800000; font-weight:bold; '>return</span> box
+<span style='color:#800080; '>}</span>
+</pre>
+	</div>
+	<script src="custom.build.js"></script>
+</body>

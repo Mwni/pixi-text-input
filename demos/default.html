@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>PIXI TextInput Demo</title>
+	<style type="text/css">
+		body,html{
+			font-family: 'Helvetica Neue', Helvetica, Arial;
+			background-color: #eee;
+			text-align: center;
+		}
+		canvas{
+			display: block;
+			margin: auto;
+			width: 1000px;
+			height: auto;
+		}
+		.controls > div{
+			display: inline-block;
+			margin: 20px 10px 0 10px;
+			vertical-align: middle;
+		}
+		.controls > div input,
+		.controls > div select{
+			font-size: 13pt;
+			padding: 3px;
+		}
+		.controls > div input[type=number]{
+			width: 50px;
+		}
+		.controls > div input[type=button]{
+			padding: 3px 8px;
+		}
+		.source{
+			margin: auto;
+			margin-top: 50px;
+			max-width: 800px;
+			text-align: left;
+		}
+		.source pre{
+			background-color: rgba(255,255,255,0.8);
+			padding: 15px;
+		}
+	</style>
+</head>
+<body>
+	<h1>PIXI TextInput Demo</h1>
+	<div id="canvas-placeholder"></div>
+	<div class="controls">
+		<div>
+			<label>Font</label>
+			<select id="font">
+				<option value="Arial">Arial</option>
+				<option value="Helvetica">Helvetica</option>
+				<option value="Times New Roman">Times New Roman</option>
+				<option value="Tahoma">Tahoma</option>
+			</select>
+		</div>
+		<div>
+			<label>Size</label>
+			<input type="number" value="36" id="size"/>
+		</div>
+		<div>
+			<label>Bold</label>
+			<input type="checkbox" id="bold"/>
+		</div>
+		<div>
+			<label>Padding</label>
+			<input type="number" value="12" id="padding"/>
+		</div>
+		<div>
+			<input type="button" value="Disable" id="disable"/>
+		</div>
+		<div>
+			<input type="button" value="Select" id="select"/>
+		</div>
+		<div>
+			<input type="button" value="Animate" id="animate"/>
+		</div>
+	</div>
+
+	<div class="source">
+<pre class="code_syntax" style="color:#000000;background:#ffffff;"><span class="line_wrapper"><span style="color:#800000; font-weight:bold; ">import</span> <span style="color:#800080; ">{</span> Application <span style="color:#800080; ">}</span> from <span style="color:#800000; ">'</span><span style="color:#0000e6; ">pixi.js</span><span style="color:#800000; ">'</span></span>
+<span class="line_wrapper"><span style="color:#800000; font-weight:bold; ">import</span> TextInput from <span style="color:#800000; ">'</span><span style="color:#0000e6; ">../text-input.js</span><span style="color:#800000; ">'</span></span>
+<span class="line_wrapper"></span>
+<span class="line_wrapper"><span style="color:#800000; font-weight:bold; ">let</span> app</span>
+<span class="line_wrapper"><span style="color:#800000; font-weight:bold; ">let</span> <span style="color:#797997; ">input</span></span>
+<span class="line_wrapper"></span>
+<span class="line_wrapper"><span style="color:#800000; font-weight:bold; ">function</span> init<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span><span style="color:#800080; ">{</span></span>
+<span class="line_wrapper">    app <span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">new</span> Application<span style="color:#808030; ">(</span></span>
+<span class="line_wrapper">        <span style="color:#800080; ">{</span> </span>
+<span class="line_wrapper">            width<span style="color:#800080; ">:</span> <span style="color:#008c00; ">1000</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">            height<span style="color:#800080; ">:</span> <span style="color:#008c00; ">600</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">            antialias<span style="color:#800080; ">:</span> <span style="color:#0f4d75; ">true</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">            backgroundColor<span style="color:#800080; ">:</span> <span style="color:#008000; ">0xffffff</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">            resolution<span style="color:#800080; ">:</span> window<span style="color:#808030; ">.</span>devicePixelRatio <span style="color:#808030; ">||</span> <span style="color:#008c00; ">1</span></span>
+<span class="line_wrapper">        <span style="color:#800080; ">}</span></span>
+<span class="line_wrapper">    <span style="color:#808030; ">)</span></span>
+<span class="line_wrapper">    document<span style="color:#808030; ">.</span>getElementById<span style="color:#808030; ">(</span><span style="color:#800000; ">'</span><span style="color:#0000e6; ">canvas-placeholder</span><span style="color:#800000; ">'</span><span style="color:#808030; ">)</span><span style="color:#808030; ">.</span>appendChild<span style="color:#808030; ">(</span>app<span style="color:#808030; ">.</span>view<span style="color:#808030; ">)</span></span>
+<span class="line_wrapper"></span>
+<span class="line_wrapper"></span>
+<span class="line_wrapper">    <span style="color:#797997; ">input</span> <span style="color:#808030; ">=</span> <span style="color:#800000; font-weight:bold; ">new</span> TextInput<span style="color:#808030; ">(</span><span style="color:#800080; ">{</span></span>
+<span class="line_wrapper">        <span style="color:#797997; ">input</span><span style="color:#800080; ">:</span> <span style="color:#800080; ">{</span></span>
+<span class="line_wrapper">            fontFamily<span style="color:#800080; ">:</span> <span style="color:#800000; ">'</span><span style="color:#0000e6; ">Arial</span><span style="color:#800000; ">'</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">            fontSize<span style="color:#800080; ">:</span> <span style="color:#800000; ">'</span><span style="color:#0000e6; ">36px</span><span style="color:#800000; ">'</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">            padding<span style="color:#800080; ">:</span> <span style="color:#800000; ">'</span><span style="color:#0000e6; ">12px</span><span style="color:#800000; ">'</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">            width<span style="color:#800080; ">:</span> <span style="color:#800000; ">'</span><span style="color:#0000e6; ">500px</span><span style="color:#800000; ">'</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">            color<span style="color:#800080; ">:</span> <span style="color:#800000; ">'</span><span style="color:#0000e6; ">#26272E</span><span style="color:#800000; ">'</span></span>
+<span class="line_wrapper">        <span style="color:#800080; ">}</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">        box<span style="color:#800080; ">:</span> <span style="color:#800080; ">{</span></span>
+<span class="line_wrapper">            <span style="color:#800000; font-weight:bold; ">default</span><span style="color:#800080; ">:</span> <span style="color:#800080; ">{</span>fill<span style="color:#800080; ">:</span> <span style="color:#008000; ">0xE8E9F3</span><span style="color:#808030; ">,</span> rounded<span style="color:#800080; ">:</span> <span style="color:#008c00; ">12</span><span style="color:#808030; ">,</span> stroke<span style="color:#800080; ">:</span> <span style="color:#800080; ">{</span>color<span style="color:#800080; ">:</span> <span style="color:#008000; ">0xCBCEE0</span><span style="color:#808030; ">,</span> width<span style="color:#800080; ">:</span> <span style="color:#008c00; ">3</span><span style="color:#800080; ">}</span><span style="color:#800080; ">}</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">            focused<span style="color:#800080; ">:</span> <span style="color:#800080; ">{</span>fill<span style="color:#800080; ">:</span> <span style="color:#008000; ">0xE1E3EE</span><span style="color:#808030; ">,</span> rounded<span style="color:#800080; ">:</span> <span style="color:#008c00; ">12</span><span style="color:#808030; ">,</span> stroke<span style="color:#800080; ">:</span> <span style="color:#800080; ">{</span>color<span style="color:#800080; ">:</span> <span style="color:#008000; ">0xABAFC6</span><span style="color:#808030; ">,</span> width<span style="color:#800080; ">:</span> <span style="color:#008c00; ">3</span><span style="color:#800080; ">}</span><span style="color:#800080; ">}</span><span style="color:#808030; ">,</span></span>
+<span class="line_wrapper">            disabled<span style="color:#800080; ">:</span> <span style="color:#800080; ">{</span>fill<span style="color:#800080; ">:</span> <span style="color:#008000; ">0xDBDBDB</span><span style="color:#808030; ">,</span> rounded<span style="color:#800080; ">:</span> <span style="color:#008c00; ">12</span><span style="color:#800080; ">}</span></span>
+<span class="line_wrapper">        <span style="color:#800080; ">}</span></span>
+<span class="line_wrapper">    <span style="color:#800080; ">}</span><span style="color:#808030; ">)</span></span>
+<span class="line_wrapper"></span>
+<span class="line_wrapper">    <span style="color:#797997; ">input</span><span style="color:#808030; ">.</span>placeholder <span style="color:#808030; ">=</span> <span style="color:#800000; ">'</span><span style="color:#0000e6; ">Enter your Text...</span><span style="color:#800000; ">'</span></span>
+<span class="line_wrapper">    <span style="color:#797997; ">input</span><span style="color:#808030; ">.</span>x <span style="color:#808030; ">=</span> <span style="color:#008c00; ">500</span></span>
+<span class="line_wrapper">    <span style="color:#797997; ">input</span><span style="color:#808030; ">.</span>y <span style="color:#808030; ">=</span> <span style="color:#008c00; ">300</span></span>
+<span class="line_wrapper">    <span style="color:#797997; ">input</span><span style="color:#808030; ">.</span>pivot<span style="color:#808030; ">.</span>x <span style="color:#808030; ">=</span> <span style="color:#797997; ">input</span><span style="color:#808030; ">.</span>width<span style="color:#808030; ">/</span><span style="color:#008c00; ">2</span></span>
+<span class="line_wrapper">    <span style="color:#797997; ">input</span><span style="color:#808030; ">.</span>pivot<span style="color:#808030; ">.</span>y <span style="color:#808030; ">=</span> <span style="color:#797997; ">input</span><span style="color:#808030; ">.</span>height<span style="color:#808030; ">/</span><span style="color:#008c00; ">2</span></span>
+<span class="line_wrapper">    app<span style="color:#808030; ">.</span>stage<span style="color:#808030; ">.</span>addChild<span style="color:#808030; ">(</span><span style="color:#797997; ">input</span><span style="color:#808030; ">)</span></span>
+<span class="line_wrapper"></span>
+<span class="line_wrapper">    setupDemoControls<span style="color:#808030; ">(</span><span style="color:#808030; ">)</span></span>
+<span class="line_wrapper"><span style="color:#800080; ">}</span></span></pre>
+	</div>
+	<script src="default.build.js"></script>
+</body>
